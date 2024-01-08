@@ -1,0 +1,111 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    form {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Node.js Calculator</h1>
+
+  <form id="calculatorForm" onsubmit="submitForm(); return false;">
+    <label for="num1">Number 1:</label>
+    <input type="text" id="num1" name="a" required>
+
+    <label for="num2">Number 2:</label>
+    <input type="text" id="num2" name="b" required>
+
+    <label for="operation">Operation:</label>
+    <select id="operation" name="operation" required>
+      <option value="add">Addition</option>
+      <option value="subtract">Subtraction</option>
+      <option value="multiply">Multiplication</option>
+      <option value="divide">Division</option>
+    </select>
+
+    <button type="submit">Calculate</button>
+  </form>
+
+  <div id="resultContainer"></div>
+
+  <script>
+    function submitForm() {
+      // Récupérez les valeurs des champs
+      const num1 = document.getElementById("num1").value;
+      const num2 = document.getElementById("num2").value;
+      const operation = document.getElementById("operation").value;
+
+      // Construisez l'URL avec les valeurs
+      const url = `/${operation}/${num1}/${num2}`;
+
+      // Effectuez une requête XMLHttpRequest
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Mettez à jour le contenu de la page avec le résultat
+            document.getElementById("resultContainer").innerHTML = xhr.responseText;
+          } else {
+            // Gérez les erreurs ici
+            console.error("Erreur de requête :", xhr.status, xhr.statusText);
+          }
+        }
+      };
+
+      // Ouvrez et envoyez la requête
+      xhr.open("GET", url, true);
+      xhr.send();
+    }
+  </script>
+</body>
+</html>

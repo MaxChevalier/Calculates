@@ -1,11 +1,13 @@
+
 const express = require('express');
 const app = express();
-const port = 3000;
+const path = require('path');
+const calculatesRoutes = require('./calculates/routes');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.use('/', calculatesRoutes);
+app.use(express.static(path.join(__dirname, 'calculates')));
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log("Server is running on port " + PORT);
 });
